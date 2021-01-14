@@ -1,0 +1,68 @@
+CREATE TABLE IF NOT EXISTS plains (
+    plain_id SERIAL PRIMARY KEY,
+    model VARCHAR(40) UNIQUE NOT NULL,
+    seats INT
+);
+
+CREATE TABLE IF NOT EXISTS  pilots (
+    pilot_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    age INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS serial_numbers (
+    serial_id SERIAL PRIMARY KEY,
+    serial_number VARCHAR(40) NOT NULL,
+    plain_id INT UNIQUE NOT NULL,
+    FOREIGN KEY (plain_id) REFERENCES plains(plain_id)
+);
+
+CREATE TABLE IF NOT EXISTS plains_to_pilots (
+    id SERIAL PRIMARY KEY,
+    plain_id INT NOT NULL,
+    pilot_id INT NOT NULL,
+    FOREIGN KEY (plain_id) REFERENCES plains(plain_id),
+    FOREIGN KEY (pilot_id) REFERENCES pilots(pilot_id)
+);
+
+INSERT INTO
+    plains (model, seats)
+    VALUES
+           ('Boeing 747', 467),
+           ('Airbus A320', 186),
+           ('Ту-154', 180),
+           ('Як-40', 24),
+           ('Cessna 500', 5);
+
+INSERT INTO
+    pilots (name, age)
+    VALUES
+           ('James H. Doolittle', 24),
+           ('Noel Wien', 31),
+           ('Robert A. Hoover', 27);
+
+INSERT INTO
+    serial_numbers (serial_number, plain_id)
+    VALUES
+           ('AWS45-03', 2),
+           ('B1387-619', 1),
+           ('12324801-31', 4),
+           ('453167-486', 3),
+           ('BCWH-3106', 5);
+
+INSERT INTO
+    plains_to_pilots (plain_id, pilot_id)
+    VALUES
+           (1, 1),
+           (1, 2),
+           (1, 3),
+           (2, 1),
+           (2, 2),
+           (2, 3),
+           (3, 2),
+           (3, 3),
+           (4, 1),
+           (4, 2),
+           (4, 3),
+           (5, 3);
+
