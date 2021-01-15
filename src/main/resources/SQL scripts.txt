@@ -39,7 +39,9 @@ INSERT INTO
     VALUES
            ('James H. Doolittle', 24),
            ('Noel Wien', 31),
-           ('Robert A. Hoover', 27);
+           ('Robert A. Hoover', 27),
+           ('Charles E. Yeager', 40),
+           ('Scott Crossfield', 34);
 
 INSERT INTO
     serial_numbers (serial_number, plain_id)
@@ -55,14 +57,29 @@ INSERT INTO
     VALUES
            (1, 1),
            (1, 2),
-           (1, 3),
            (2, 1),
            (2, 2),
            (2, 3),
            (3, 2),
            (3, 3),
-           (4, 1),
            (4, 2),
            (4, 3),
-           (5, 3);
+           (5, 3),
+           (3, 4),
+           (3, 5),
+           (4, 4),
+           (5, 5),
+           (5, 4);
 
+SELECT
+    plains_to_pilots.plain_id,
+    count(plains_to_pilots.pilot_id) pilots,
+       plains.model,
+       plains.seats
+FROM plains_to_pilots
+LEFT JOIN plains on plains.plain_id = plains_to_pilots.plain_id
+WHERE plains_to_pilots.plain_id IN (SELECT plains_to_pilots.plain_id
+    FROM plains_to_pilots
+    GROUP BY plains_to_pilots.plain_id HAVING mod(count(*),2) != 1)
+GROUP BY plains_to_pilots.plain_id, plains.model, plains.seats
+ORDER BY plains_to_pilots.plain_id;
